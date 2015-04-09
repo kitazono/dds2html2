@@ -1,44 +1,38 @@
-# racc -o parser.rb parser.y
+# racc -v -g parser.y -o parser.rb
 
-class Intp::Parser
+class Parser
 
 rule
 
-  dds       : stmt_list
-                {
-                  result = RootNode.new(val[0])
-                }
+  dds       : file_level record_level field_level key_field_level
 
-  stmt_list :
-                {
-                  result = []
-                }
-            | stmt_list EOL
-            | stmt_list stmt EOL
-                {
-                  result.push(val[1])
-                }
-            | stmt_list EOF
-                {
-                }
+  file_level : functions
 
-  stmt      : record_format
-            | field
+  record_level : TYPE NAME functions
 
-  field : A ITEM_NAME LENGTH DATA_TYPE DECIMAL_POSITIONS COLHDG '(' STRING ')'
-                {
-                  result = FieldNode.new(@file_name, val[1][0], val[1][1], val[2][1], val[3][1], val[4][1], val[6][1])
-                }
 
-        | A ITEM_NAME LENGTH DATA_TYPE COLHDG '(' STRING ')'
-                {
-                  result = FieldNode.new(@file_name, val[1][0], val[1][1], val[2][1], val[3][1], nil, val[6][1])
-                }
+  field_level : data_field
+              | field_level data_field
 
-  record_format : A TYPE_OF_NAME_OR_SPEC ITEM_NAME
-                {
-                  result = RecordFormatNode.new(@file_name, val[1][0], val[1][1], val[2][1])
-                }
+  data_field : NAME length TYPE decimal_positions functions
+
+  length : NUMBER
+
+  decimal_positions : NUMBER
+                    |
+
+  key_field_level : 
+                  | key_field
+
+  key_field : TYPE NAME functions
+
+  functions :  
+            | functions function
+
+  function : IDENT
+           | IDENT '(' primary ')'
+
+  primary : STRING
 
 end
 
