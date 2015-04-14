@@ -1,0 +1,29 @@
+<%
+layout = "layout.html.erb"
+title = "DB設計書一覧"
+number = 0
+%>
+
+<h1>DB設計書一覧</h1>
+
+<p>
+<table>
+  <tbody>
+    <tr>
+      <th>No.</th>
+      <th>ファイル名</th>
+      <th>ファイルID</th>
+      <th>レコード長</th>
+    </tr>
+    <% dds_list.each do |d|  %>
+    <tr>
+      <td><%= number += 1 %></td>
+      <td class="left"><%= "???" %></td>
+      <td class="left"><a href="<%= './' + d[0] + '.html' %>"><%= d[0] %></a></td>
+      <td class="right"><%= d[1] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</body>
+</html>
+

@@ -1,0 +1,67 @@
+<%
+layout = "layout.html.erb"
+title = "レコード設計書"
+data_fields = dds.tree.data_fields
+key_fields = dds.tree.key_fields
+%>
+<h1>レコード設計書</h1>
+<p>
+
+<a href="<%= './' + "index.html" %>">一覧</a>
+<br>
+<table class="caption">
+  <tbody>
+    <tr>
+      <th>物理ファイル</th>
+      <td><%= name.sub(".txt", "") %></td>
+      <th>レコード様式名</th>
+      <td><%= dds.tree.record_name %></td>
+      <th>レコード長</th>
+      <td><%= dds.tree.record_length %></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+
+<table>
+  <tbody>
+    <tr>
+      <th>項目名</th>
+      <th>項目ID</th>
+      <th>桁数(小数)</th>
+      <th>属性</th>
+      <th>キー順</th>
+      <th>バイト</th>
+      <th>開始</th>
+      <th>終了</th>
+    </tr>
+    <% 
+      start_digit = 1
+      data_fields.each do |d| 
+        end_digit = start_digit + d.length - 1
+    %> 
+    <tr>
+      <td class="left"><%= d.functions.find{ |f| f.name == "COLHDG"}.argument %></td>
+      <td><%= d.name %></td>
+      <td><%= d.length %> ( <%= d.decimal_positions %> ) </td>
+      <td><%= d.type %></td>
+      <td><%= key_fields[d.name].key_sequence.to_s + " ASC" if key_fields[d.name] %></td>
+      <td><%= 
+        if d.type == "P"
+          d.length / 2 + 1 
+        else
+          d.length
+        end
+      %></td>
+      <td><%= start_digit %></td>
+      <td><%= end_digit %></td>
+    </tr>
+    <%
+        start_digit = end_digit + 1
+      end 
+    %>
+  </tbody>
+</table>
+</body>
+</html>

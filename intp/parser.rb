@@ -7,7 +7,7 @@
 require 'racc/parser.rb'
 class Parser < Racc::Parser
 
-module_eval(<<'...end parser.y/module_eval...', 'parser.y', 40)
+module_eval(<<'...end parser.y/module_eval...', 'parser.y', 84)
 
   def parse(file, file_name)
     @file_name = file_name
@@ -33,66 +33,63 @@ module_eval(<<'...end parser.y/module_eval...', 'parser.y', 40)
 ##### State transition tables begin ###
 
 racc_action_table = [
-    18,    12,    20,     8,     9,    12,    13,    14,     4,     6,
-    23,    24,    25,     8,    26,    29,     8,     8 ]
+     4,     6,     8,     9,    12,    13,    14,    12,    18,    20,
+    22,    23,     8,    24,    25,    27,     8,     8 ]
 
 racc_action_check = [
-    10,    10,    12,     3,     4,     5,     6,     8,     1,     2,
-    14,    18,    19,    21,    22,    25,    27,    30 ]
+     1,     2,     3,     4,     5,     6,     8,    10,    12,    14,
+    15,    17,    19,    20,    22,    23,    28,    29 ]
 
 racc_action_pointer = [
-   nil,     8,     7,    -2,     4,     2,     3,   nil,     1,   nil,
-    -2,   nil,    -2,   nil,     2,   nil,   nil,   nil,     8,    10,
-   nil,     8,     7,   nil,   nil,    11,   nil,    11,   nil,   nil,
-    12 ]
+   nil,     0,    -1,    -3,     3,     1,     2,   nil,     0,   nil,
+     4,   nil,     4,   nil,     2,     8,   nil,     9,   nil,     7,
+     5,   nil,    11,    11,   nil,   nil,   nil,   nil,    11,    12 ]
 
 racc_action_default = [
-   -13,   -18,   -18,    -2,   -18,   -18,   -18,   -14,   -15,    31,
-   -10,    -4,   -18,   -13,   -18,    -1,    -5,   -11,   -18,   -18,
-    -7,    -3,   -18,   -17,   -13,    -9,   -16,   -12,   -13,    -8,
-    -6 ]
+   -13,   -17,   -17,    -2,   -17,   -17,   -17,   -14,   -15,    30,
+   -10,    -4,   -17,   -13,   -17,    -1,    -5,   -17,    -7,    -3,
+   -17,   -11,   -17,    -9,   -16,   -13,   -13,    -8,   -12,    -6 ]
 
 racc_goto_table = [
-     3,    11,     1,    10,    15,     5,    16,     2,    19,    28,
-    17,    22,   nil,    21,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,    27,   nil,   nil,   nil,    30 ]
+     3,    11,     1,    10,    15,     5,    16,     2,    17,    26,
+    21,   nil,   nil,    19,   nil,   nil,   nil,   nil,   nil,   nil,
+   nil,   nil,   nil,   nil,   nil,    28,    29 ]
 
 racc_goto_check = [
      6,     7,     1,     4,     5,     3,     7,     2,     8,     9,
-    10,    12,   nil,     6,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,     6,   nil,   nil,   nil,     6 ]
+    10,   nil,   nil,     6,   nil,   nil,   nil,   nil,   nil,   nil,
+   nil,   nil,   nil,   nil,   nil,     6,     6 ]
 
 racc_goto_pointer = [
-   nil,     2,     7,     3,    -2,    -6,     0,    -4,    -4,   -16,
-     0,   nil,    -3 ]
+   nil,     2,     7,     3,    -2,    -6,     0,    -4,    -4,   -14,
+    -5,   nil ]
 
 racc_goto_default = [
    nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,     7,   nil ]
+   nil,     7 ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
-  4, 10, :_reduce_none,
+  4, 10, :_reduce_1,
   1, 11, :_reduce_none,
-  3, 12, :_reduce_none,
-  1, 13, :_reduce_none,
-  2, 13, :_reduce_none,
-  5, 16, :_reduce_none,
+  3, 12, :_reduce_3,
+  1, 13, :_reduce_4,
+  2, 13, :_reduce_5,
+  5, 16, :_reduce_6,
   1, 17, :_reduce_none,
   1, 18, :_reduce_none,
-  0, 18, :_reduce_none,
-  0, 14, :_reduce_none,
-  1, 14, :_reduce_none,
-  3, 19, :_reduce_none,
-  0, 15, :_reduce_none,
-  2, 15, :_reduce_none,
-  1, 20, :_reduce_none,
-  4, 20, :_reduce_none,
-  1, 21, :_reduce_none ]
+  0, 18, :_reduce_9,
+  0, 14, :_reduce_10,
+  2, 14, :_reduce_11,
+  3, 19, :_reduce_12,
+  0, 15, :_reduce_13,
+  2, 15, :_reduce_14,
+  1, 20, :_reduce_15,
+  4, 20, :_reduce_16 ]
 
-racc_reduce_n = 18
+racc_reduce_n = 17
 
-racc_shift_n = 31
+racc_shift_n = 30
 
 racc_token_table = {
   false => 0,
@@ -102,12 +99,12 @@ racc_token_table = {
   :NUMBER => 4,
   :IDENT => 5,
   "(" => 6,
-  ")" => 7,
-  :STRING => 8 }
+  :STRING => 7,
+  ")" => 8 }
 
 racc_nt_base = 9
 
-racc_use_result_var = true
+racc_use_result_var = false
 
 Racc_arg = [
   racc_action_table,
@@ -133,8 +130,8 @@ Racc_token_to_s_table = [
   "NUMBER",
   "IDENT",
   "\"(\"",
-  "\")\"",
   "STRING",
+  "\")\"",
   "$start",
   "dds",
   "file_level",
@@ -146,8 +143,7 @@ Racc_token_to_s_table = [
   "length",
   "decimal_positions",
   "key_field",
-  "function",
-  "primary" ]
+  "function" ]
 
 Racc_debug_parser = true
 
@@ -155,41 +151,108 @@ Racc_debug_parser = true
 
 # reduce 0 omitted
 
-# reduce 1 omitted
+module_eval(<<'.,.,', 'parser.y', 10)
+  def _reduce_1(val, _values)
+                      RootNode.new(val[0], val[1], val[2], val[3])
+                
+  end
+.,.,
 
 # reduce 2 omitted
 
-# reduce 3 omitted
+module_eval(<<'.,.,', 'parser.y', 17)
+  def _reduce_3(val, _values)
+                      RecordNode.new(@file_name, val[0][0], val[0][1], val[1][1], val[2])
+                
+  end
+.,.,
 
-# reduce 4 omitted
+module_eval(<<'.,.,', 'parser.y', 22)
+  def _reduce_4(val, _values)
+                          [val[0]]                
+                   
+  end
+.,.,
 
-# reduce 5 omitted
+module_eval(<<'.,.,', 'parser.y', 26)
+  def _reduce_5(val, _values)
+                        val[0].push(val[1])
+                  
+  end
+.,.,
 
-# reduce 6 omitted
+module_eval(<<'.,.,', 'parser.y', 31)
+  def _reduce_6(val, _values)
+                        DataFieldNode.new(@file_name, val[0][0], val[0][1], val[1][1], val[2][1], val[3][1], val[4])
+                  
+  end
+.,.,
 
 # reduce 7 omitted
 
 # reduce 8 omitted
 
-# reduce 9 omitted
+module_eval(<<'.,.,', 'parser.y', 39)
+  def _reduce_9(val, _values)
+                              [nil, nil]
+                        
+  end
+.,.,
 
-# reduce 10 omitted
+module_eval(<<'.,.,', 'parser.y', 45)
+  def _reduce_10(val, _values)
+                            @key_sequence = 0
+                        {}
+                      
+  end
+.,.,
 
-# reduce 11 omitted
+module_eval(<<'.,.,', 'parser.y', 50)
+  def _reduce_11(val, _values)
+                            @key_sequence += 1
+                        val[1].key_sequence = @key_sequence 
+                        val[0].store(val[1].name, val[1])
+                        val[0]
+                      
+  end
+.,.,
 
-# reduce 12 omitted
+module_eval(<<'.,.,', 'parser.y', 59)
+  def _reduce_12(val, _values)
+                  KeyFieldNode.new(@file_name, val[0][0], val[0][1], val[1][1], val[2])
+            
+  end
+.,.,
 
-# reduce 13 omitted
+module_eval(<<'.,.,', 'parser.y', 64)
+  def _reduce_13(val, _values)
+                      []
+                
+  end
+.,.,
 
-# reduce 14 omitted
+module_eval(<<'.,.,', 'parser.y', 68)
+  def _reduce_14(val, _values)
+                      val[0].push(val[1])
+                
+  end
+.,.,
 
-# reduce 15 omitted
+module_eval(<<'.,.,', 'parser.y', 73)
+  def _reduce_15(val, _values)
+                   FunctionNode.new(@file_name, val[0][0], val[0][1])
+            
+  end
+.,.,
 
-# reduce 16 omitted
+module_eval(<<'.,.,', 'parser.y', 77)
+  def _reduce_16(val, _values)
+                   FunctionNode.new(@file_name, val[0][0], val[0][1], val[2][1])
+            
+  end
+.,.,
 
-# reduce 17 omitted
-
-def _reduce_none(val, _values, result)
+def _reduce_none(val, _values)
   val[0]
 end
 
