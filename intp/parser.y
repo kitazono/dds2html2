@@ -18,9 +18,9 @@ rule
                   RecordNode.new(@file_name, val[0][0], val[0][1], val[1][1], val[2])
                 }
 
-  field_level : data_field
+  field_level : 
                    {
-                      [val[0]]                
+                      []                
                    }
               | field_level data_field
                   {
@@ -77,6 +77,11 @@ rule
             {
                FunctionNode.new(@file_name, val[0][0], val[0][1], val[2][1])
             }
+           | IDENT '(' IDENT ')'
+            {
+               FunctionNode.new(@file_name, val[0][0], val[0][1], val[2][1])
+            }
+
 
 end
 

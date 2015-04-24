@@ -1,3 +1,4 @@
+<%# coding: UTF-8 %>
 <%
 layout = "layout.html.erb"
 title = "レコード設計書"
@@ -40,11 +41,13 @@ key_fields = dds.tree.key_fields
       start_digit = 1
       data_fields.each do |d| 
         end_digit = start_digit + d.length - 1
+        name_j = d.functions.find{ |f| f.name == "COLHDG" || f.name == "TEXT"}.argument
+
     %> 
     <tr>
-      <td class="left"><%= d.functions.find{ |f| f.name == "COLHDG"}.argument %></td>
+      <td class="left"><%= name_j %></td>
       <td><%= d.name %></td>
-      <td><%= d.length %> ( <%= d.decimal_positions %> ) </td>
+      <td><%= d.length %> <%= "(" + d.decimal_positions.to_s + ")" if d.decimal_positions %>  </td>
       <td><%= d.type %></td>
       <td><%= key_fields[d.name].key_sequence.to_s + " ASC" if key_fields[d.name] %></td>
       <td><%= 

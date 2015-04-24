@@ -1,3 +1,5 @@
+#coding:utf-8
+
 # ruby main.rb ./src
 
 require './intp/scanner.rb'
@@ -13,7 +15,7 @@ class DDSAnalysis
     @file_name = file_name
     begin
       tree = nil
-      File.open(@file_name) {|file| @tree = Parser.new.parse(file, @file_name)}
+      File.open(@file_name, 'r:cp932:utf-8') {|file| @tree = Parser.new.parse(file, @file_name)}
     rescue Racc::ParseError, IntpError, Errno::ENOENT
       $stderr.puts "#{$0}: #{$!}"
       exit 1

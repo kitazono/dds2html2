@@ -1,3 +1,5 @@
+#coding:utf-8
+
 class IntpError < StandardError; end
 class IntpArgumentError < IntpError; end
 
