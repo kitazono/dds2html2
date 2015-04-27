@@ -3,14 +3,24 @@
 class IntpError < StandardError; end
 class IntpArgumentError < IntpError; end
 
+
 class Node
 
-  attr_reader :file_name
-  attr_reader :lineno
+  attr_reader :file_name, :lineno
+
+  @@start_digit = 0
+  @@record_length = 0
+  @@key_sequence = 0
 
   def initialize(file_name, lineno)
     @file_name = file_name
     @lineno = lineno
+  end
+
+  def exec_list(nodes)
+    v = nil
+    nodes.each {|node| v = node.evaluate}
+    v
   end
 
   def intp_error!(msg)
@@ -23,7 +33,10 @@ class Node
 
 end
 
+
 class RootNode < Node
+
+  attr_accessor :file_level, :record_level, :field_level, :key_field_level, :record_length
 
   def initialize(file_level, record_level, field_level, key_field_level)
     super(nil, nil)
@@ -31,10 +44,17 @@ class RootNode < Node
     @record_level = record_level
     @field_level = field_level
     @key_field_level = key_field_level
+    
+  
+    @@start_digit = 1
+    @@record_length = 0
+    @@key_sequence = 0
   end
 
-  def record_name
-    @record_level.name
+  def evaluate
+    @record_level.evaluate
+    exec_list(@field_level)
+    @record_length = @@record_length
   end
 
   def data_fields
@@ -45,17 +65,12 @@ class RootNode < Node
     @key_field_level
   end
 
-  def record_length
-    length = 0
-    @field_level.each{|d| length += d.length}
-    length
-  end
-
 end
+
 
 class RecordNode < Node
 
-  attr_accessor :type, :name, :functions 
+  attr_accessor :type, :name, :functions
 
   def initialize(file_name, lineno, type, name, functions)
     super(file_name, lineno)
@@ -64,7 +79,11 @@ class RecordNode < Node
     @functions = functions
   end
 
+  def evaluate
+  end
+
 end
+
 
 class FunctionNode < Node
 
@@ -88,7 +107,7 @@ class KeyFieldNode < Node
     @type = type
     @name = name
     @functions = functions
-    @key_sequence = nil
+    @key_sequence = @@key_sequence + 1
   end
 
 end
@@ -96,15 +115,29 @@ end
 
 class DataFieldNode < Node
 
-  attr_reader :name, :length, :type, :decimal_positions, :functions
+  attr_reader :name, :length, :type, :decimal_positions, :functions, :start_digit, :end_digit, :byte, :name_j
 
   def initialize(file_name, lineno, name, length, type, decimal_positions, functions)
     super(file_name, lineno)
     @name = name
     @length = length
     @type = type
+    if type == "P"
+      @byte = length / 2 + 1
+    else
+      @byte = length
+    end
     @decimal_positions = decimal_positions
     @functions = functions
+    @name_j = functions.find{ |f| f.name == "COLHDG" || f.name == "TEXT"}.argument
+  end
+
+  def evaluate
+    @start_digit = @@start_digit
+    @end_digit = @start_digit + @length - 1
+    @@start_digit = @end_digit + 1
+
+    @@record_length += @length
   end
 
 end

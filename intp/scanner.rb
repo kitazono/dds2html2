@@ -54,11 +54,11 @@ end
 
 if __FILE__ == $0
   exit  if ARGV.size != 1
-  filename = ARGV.shift
+  file_name = ARGV.shift
   rex = Scanner.new
   begin
-    rex.scan(open(filename)).each {|i| p i }
+    rex.scan(open(file_name)).each {|i| p i }
   rescue
-    $stderr.printf  "%s:%d:%s\n", rex.filename, rex.file.lineno, $!.message
+    $stderr.printf  "%s:%d:%s\n", rex.file_name, rex.file.lineno, $!.message
   end
 end

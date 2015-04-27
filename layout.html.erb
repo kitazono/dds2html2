@@ -1,7 +1,3 @@
-<%
-  header = ERB.new(File.read("header.html.erb"), nil, nil, '_header_out').result(binding)
-  footer = ERB.new(File.read("footer.html.erb"), nil, nil, '_footer_out').result(binding)
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,14 +7,8 @@
   <link href="css/table.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-  <div id="header">
-    <%= header %>
-  </div>
-  <div id="content">
+  <div>
     <%= content %>
-  </div>
-  <div id="footer">
-    <%= footer %>
   </div>
 </body>
 </html>
