@@ -52,7 +52,8 @@ class RootNode < Node
   end
 
   def evaluate
-    @record_level.evaluate
+    dds =  @record_level.evaluate
+    @field_level = dds.field_level if dds
     exec_list(@field_level)
     @record_length = @@record_length
   end
@@ -80,7 +81,9 @@ class RecordNode < Node
   end
 
   def evaluate
-    @functions.each{|f| f.evaluate }
+    v = nil
+    @functions.each{|f| v = f.evaluate }
+    v
   end
 
 end
@@ -98,7 +101,7 @@ class FunctionNode < Node
 
   def evaluate
     if @name == "PFILE"
-      p DDSAnalysis.new($dds_dir + '/' +  argument + ".txt")
+      DDSAnalysis.new($dds_dir + '/' +  argument + ".txt").parse
     end
   end
 

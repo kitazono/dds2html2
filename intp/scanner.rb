@@ -20,7 +20,7 @@ class Scanner
         # @q.push [:A, [file.lineno, line[5]]] unless line[5] =~ /\A\s+$/
         @q.push [:TYPE, [file.lineno, line[16]]] unless line[16] =~ /\A\s+$/
         @q.push [:NAME, [file.lineno, line[18..27].strip]] unless line[18..27] =~ /\A\s+$/
-        # @q.push [:REFERENCE, [file.lineno, line[28]]] unless line[28] =~ /\A\s+$/
+        @q.push [:REFERENCE, [file.lineno, line[28]]] unless line[28] =~ /\A\s+$/
         @q.push [:NUMBER, [file.lineno, line[29..33].to_i]] unless line[29..33] =~ /\A\s+$/
         @q.push [:TYPE, [file.lineno, line[34]]] unless line[34] =~ /\A\s+$/
         @q.push [:NUMBER, [file.lineno, line[35..36].to_i]] unless line[35..36] =~ /\A\s+$/

@@ -32,6 +32,11 @@ rule
                         {
                           DataFieldNode.new(@file_name, val[0][0], val[0][1], val[1][1], val[2][1], val[3][1], val[4])
                         }
+                    | NAME REFERENCE functions
+                        {
+                          DataFieldNode.new(@file_name, val[0][0], val[0][1], nil, val[1][1], nil, val[2])
+                        }
+
 
   length            : NUMBER
                     |
