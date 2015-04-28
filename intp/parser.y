@@ -1,4 +1,5 @@
 # racc -v -g parser.y -o parser.rb
+# racc parser.y -o parser.rb
 
 class Parser
 
@@ -32,7 +33,11 @@ rule
                           DataFieldNode.new(@file_name, val[0][0], val[0][1], val[1][1], val[2][1], val[3][1], val[4])
                         }
 
-  length : NUMBER
+  length            : NUMBER
+                    |
+                        {
+                          [nil, nil]
+                        }
 
   decimal_positions : NUMBER
                     |

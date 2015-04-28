@@ -80,6 +80,7 @@ class RecordNode < Node
   end
 
   def evaluate
+    @functions.each{|f| f.evaluate }
   end
 
 end
@@ -95,6 +96,12 @@ class FunctionNode < Node
     @argument = argument
   end
 
+  def evaluate
+    if @name == "PFILE"
+      p DDSAnalysis.new($dds_dir + '/' +  argument + ".txt")
+    end
+  end
+
 end
 
 
@@ -107,7 +114,8 @@ class KeyFieldNode < Node
     @type = type
     @name = name
     @functions = functions
-    @key_sequence = @@key_sequence + 1
+    @@key_sequence += 1
+    @key_sequence = @@key_sequence
   end
 
 end
