@@ -17,9 +17,9 @@ class Node
     @lineno = lineno
   end
 
-  def exec_list(nodes)
+  def exec_list(nodes, dds)
     v = nil
-    nodes.each {|node| v = node.evaluate}
+    nodes.each {|node| v = node.evaluate(dds)}
     v
   end
 
@@ -44,26 +44,23 @@ class RootNode < Node
     @record_level = record_level
     @field_level = field_level
     @key_field_level = key_field_level
-    
-  
-    @@start_digit = 1
-    @@record_length = 0
-    @@key_sequence = 0
   end
 
   def evaluate
-    dds =  @record_level.evaluate
-    @field_level = dds.field_level if dds
-    exec_list(@field_level)
+    dds = nil
+
+    if dds = @record_level.evaluate(dds)
+      @field_level = dds.field_level
+    end
+
+    dds = exec_list(@file_level, dds)
+
+    @@start_digit = 1
+    @@record_length = 0
+    @@key_sequence = 0
+
+    exec_list(@field_level, dds)
     @record_length = @@record_length
-  end
-
-  def data_fields
-    @field_level
-  end
-
-  def key_fields
-    @key_field_level
   end
 
 end
@@ -80,9 +77,9 @@ class RecordNode < Node
     @functions = functions
   end
 
-  def evaluate
+  def evaluate(dds)
     v = nil
-    @functions.each{|f| v = f.evaluate }
+    @functions.each{|f| v = f.evaluate(dds) }
     v
   end
 
@@ -99,10 +96,13 @@ class FunctionNode < Node
     @argument = argument
   end
 
-  def evaluate
-    if @name == "PFILE"
+  def evaluate(dds)
+    if @name == "PFILE" || @name == "REF"
       DDSAnalysis.new($dds_dir + '/' +  argument + ".txt").parse
+    elsif @name == "REFFLD"
+      dds.field_level.select{|d| d.name == @argument} 
     end
+      
   end
 
 end
@@ -143,7 +143,16 @@ class DataFieldNode < Node
     @name_j = functions.find{ |f| f.name == "COLHDG" || f.name == "TEXT"}.argument
   end
 
-  def evaluate
+  def evaluate(dds)
+    v = nil
+    @functions.each{|f| v = f.evaluate(dds) }
+    if v
+      @length = v[0].length
+      @type = v[0].type
+      @decimal_positions = v[0].decimal_positions
+      @byte = v[0].byte
+    end
+
     @start_digit = @@start_digit
     @end_digit = @start_digit + @length - 1
     @@start_digit = @end_digit + 1
@@ -153,13 +162,3 @@ class DataFieldNode < Node
 
 end
 
-
-class RecordFormatNode < Node
-
-  def initialize(file_name, lineno, type_of_name_or_spec, item_name)
-    super(file_name, lineno)
-    @type_of_name_or_spec = type_of_name_or_spec
-    @item_name = item_name
-  end
-
-end

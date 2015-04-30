@@ -1,7 +1,7 @@
 <%# coding: UTF-8 %>
 <%
   title = "レコード設計書"
-  key_fields = dds_tree.key_fields
+  key_fields = dds_tree.key_field_level
   number = 0
 %>
 <h1>レコード設計書</h1>
@@ -33,7 +33,7 @@
     <th>開始</th>
     <th>終了</th>
   </tr>
-  <% dds_tree.data_fields.each do |d| %> 
+  <% dds_tree.field_level.each do |d| %> 
   <tr>
     <td><%= number += 1 %></td>
     <td class="left"><%= d.name_j %></td>
