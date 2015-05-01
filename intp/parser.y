@@ -32,6 +32,10 @@ rule
                         {
                           DataFieldNode.new(@file_name, val[0][0], val[0][1], val[1][1], val[2][1], val[3][1], val[4])
                         }
+                    | NAME length decimal_positions functions
+                        {
+                          DataFieldNode.new(@file_name, val[0][0], val[0][1], val[1][1], "A", val[2][1], val[3])
+                        }
                     | NAME REFERENCE functions
                         {
                           DataFieldNode.new(@file_name, val[0][0], val[0][1], nil, val[1][1], nil, val[2])
@@ -80,15 +84,19 @@ rule
                         {
                           FunctionNode.new(@file_name, val[0][0], val[0][1])
                         }
-                    | IDENT '(' STRING ')'
-                        {
-                          FunctionNode.new(@file_name, val[0][0], val[0][1], val[2][1])
-                        }
-                    | IDENT '(' IDENT ')'
+                    | IDENT '(' primary ')'
                         {
                           FunctionNode.new(@file_name, val[0][0], val[0][1], val[2][1])
                         }
 
+
+  primary           : STRING
+                    | STRING '+' STRING
+                        {
+                          val[0][1][1] = val[0][1][1] + val[2][1][1]
+                          val[0]
+                        }
+                    | IDENT
 
 end
 

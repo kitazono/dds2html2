@@ -53,7 +53,7 @@ class RootNode < Node
       @field_level = dds.field_level
     end
 
-    dds = exec_list(@file_level, dds)
+    dds ||= exec_list(@file_level, dds)
 
     @@start_digit = 1
     @@record_length = 0
@@ -146,7 +146,7 @@ class DataFieldNode < Node
   def evaluate(dds)
     v = nil
     @functions.each{|f| v = f.evaluate(dds) }
-    if v
+    if ( not v.nil? ) && ( not v.empty?)
       @length = v[0].length
       @type = v[0].type
       @decimal_positions = v[0].decimal_positions
