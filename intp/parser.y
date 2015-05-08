@@ -28,7 +28,7 @@ rule
                           val[0].push(val[1])
                         }
 
-  data_field        : NAME length TYPE decimal_positions functions
+  data_field        : NAME length FILE_TYPE decimal_positions functions
                         {
                           DataFieldNode.new(@file_name, val[0][0], val[0][1], val[1][1], val[2][1], val[3][1], val[4])
                         }
@@ -42,7 +42,7 @@ rule
                         }
 
 
-  length            : NUMBER
+  length            : LENGTH
                     |
                         {
                           [nil, nil]
@@ -70,6 +70,10 @@ rule
                         {
                           KeyFieldNode.new(@file_name, val[0][0], val[0][1], val[1][1], val[2])
                         }
+                    | NAME functions
+                        {
+                          KeyFieldNode.new(@file_name, val[0][0], val[0][1], nil, val[1])
+                        }
 
   functions         :
                         {
@@ -96,7 +100,31 @@ rule
                           val[0][1][1] = val[0][1][1] + val[2][1][1]
                           val[0]
                         }
+                    | STRING '-' STRING
+                        {
+                          val[0][1][1] = val[0][1][1] + val[2][1][1]
+                          val[0]
+                        }
+                    | STRING IDENT STRING
+                        {
+                          val[0][1] = val[0][1] + val[1][1] + val[2][1]
+                          val[0]
+                        }
+                    | STRING STRING STRING
+                        {
+                          val[0][1] = val[0][1] + val[1][1] + val[2][1]
+                          val[0]
+                        }
+                    | STRING STRING
+                        {
+                          val[0][1][1] = val[0][1][1] + val[1][1][1]
+                          val[0]
+                        }
                     | IDENT
+                    | EQ NUMBER
+                    | EQ STRING
+                    | NE STRING
+                    | NUMBER
 
 end
 

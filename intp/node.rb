@@ -53,7 +53,10 @@ class RootNode < Node
       @field_level = dds.field_level
     end
 
-    dds ||= exec_list(@file_level, dds)
+    v = nil
+    @file_level.each{|f| v ||= f.evaluate(dds) }
+    dds ||= v
+    # dds ||= exec_list(@file_level, dds)
 
     @@start_digit = 1
     @@record_length = 0
@@ -140,7 +143,7 @@ class DataFieldNode < Node
     end
     @decimal_positions = decimal_positions
     @functions = functions
-    @name_j = functions.find{ |f| f.name == "COLHDG" || f.name == "TEXT"}.argument
+    @name_j = functions.find{ |f| f.name == "COLHDG" || f.name == "TEXT"}.argument if functions.find{ |f| f.name == "COLHDG" || f.name == "TEXT"}
   end
 
   def evaluate(dds)
