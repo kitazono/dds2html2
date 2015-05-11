@@ -5,6 +5,7 @@
 require './intp/scanner.rb'
 require './intp/parser.rb'
 require './intp/node.rb'
+require './setting.rb'
 require 'erb'
 
 $dds_dir = ARGV[0] ? ARGV[0] : "./src"

@@ -26,7 +26,7 @@
   <% dds_list.each do |d|  %>
   <tr>
     <td><%= number += 1 %></td>
-    <td class="left"><%= "???" %></td>
+    <td class="left"><%= TBL_NAME[d[0]] %></td>
     <td class="left"><a href="<%= './' + d[0] + '.html' %>"><%= d[0] %></a></td>
     <td class="right"><%= d[1] %></td>
   </tr>
