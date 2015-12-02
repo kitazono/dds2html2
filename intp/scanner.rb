@@ -4,7 +4,8 @@ require 'strscan'
 
 class Scanner
 
-# トークン：[記号, [行番号, 値]]
+  # トークン：[記号, [行番号, 値]]
+  
   RESERVED = {
     "EQ"    => :EQ,
     "NE"    => :NE
@@ -16,9 +17,8 @@ class Scanner
     @q = []
     file.each do |line|
       line = sprintf("%-80s", line).sub("\n", "")
-      if line[6] != "*" # コメント除外
-        # FORMAT_TYPE フォーマットタイプチェックをそのうち実装する
-        # @q.push [:A, [file.lineno, line[5]]] unless line[5] =~ /\A\s+$/
+      # コメント以外
+      if line[6] != "*"
         @q.push [:TYPE, [file.lineno, line[16]]] unless line[16] =~ /\A\s+$/
         @q.push [:NAME, [file.lineno, line[18..27].strip]] unless line[18..27] =~ /\A\s+$/
         @q.push [:REFERENCE, [file.lineno, line[28]]] unless line[28] =~ /\A\s+$/
@@ -49,7 +49,6 @@ class Scanner
             raise  ScanError, "can not match: '" + text + "'"
           end
         end
-        # @q.push [:EOL, [file.lineno, nil]]
       end
     end
     @q.push [false, '$']

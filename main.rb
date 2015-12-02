@@ -56,8 +56,7 @@ number_of_files = 0
 
 while name = dir.read
 
-  next if name == "."
-  next if name == ".."
+  next if name == "." || name == ".."
 
   dds = DDSAnalysis.new($dds_dir + '/' +  name)
   dds_tree = dds.parse
